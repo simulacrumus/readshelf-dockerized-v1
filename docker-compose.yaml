@@ -1,0 +1,44 @@
+    version: '3.7'
+    services:
+      server:
+        build: ./server
+        container_name: readshelf-server
+        restart: always
+        ports:
+          - ${API_SERVER_PORT}:5000
+        environment:
+          - APP_BASE_URI=${APP_BASE_URI}
+          - MONGO_ATLAS_URI=${MONGO_ATLAS_URI}
+          - JWT_SECRET=${JWT_SECRET}
+          - GOOGLE_BOOKS_API_KEY=${GOOGLE_BOOKS_API_KEY}
+          - GOOGLE_BOOKS_API_ADDRESS=${GOOGLE_BOOKS_API_ADDRESS}
+          - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+          - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+          - GOOGLE_OAUTH_REDIRECT_URL=${GOOGLE_OAUTH_REDIRECT_URL}
+          - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+          - SENDGRID_SENDER_EMAIL_ADDRESS=${SENDGRID_SENDER_EMAIL_ADDRESS}
+          - GOOGLE_OAUTH_SCOPE_EMAIL=${GOOGLE_OAUTH_SCOPE_EMAIL}
+          - GOOGLE_OAUTH_SCOPE_PROFILE=${GOOGLE_OAUTH_SCOPE_PROFILE}
+          - GOOGLE_ANALYTICS_MEASUREMENT_ID=${GOOGLE_ANALYTICS_MEASUREMENT_ID}
+          - NYTIMES_API_ADDRESS=${NYTIMES_API_ADDRESS}
+          - NYTIMES_API_KEY=${NYTIMES_API_KEY}
+          - NYTIMES_API_SECRET=${NYTIMES_API_SECRET}
+          - SUPPRESS_NO_CONFIG_WARNING=true
+          - API_URL=${API_URL}
+        networks:
+            - readshelf-network
+      client:
+        build: ./client
+        container_name: readshelf-client
+        environment:
+          - NODE_ENV=${NODE_ENV}
+          - API_URL=${API_URL}
+        depends_on:
+          - server
+        ports:
+          - ${CLIENT_PORT}:3000
+        networks:
+          - readshelf-network
+    networks:
+        readshelf-network:
+            driver: bridge

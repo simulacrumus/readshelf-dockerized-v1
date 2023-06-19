@@ -1,0 +1,16 @@
+.env
+client/.env
+server/.env
+
+client/node_modules
+server/node_modules
+.DS_Store
+
+# production
+client/build
+
+# misc
+client/.DS_Store
+server/.DS_Store
+
+.idea
